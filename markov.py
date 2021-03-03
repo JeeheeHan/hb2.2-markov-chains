@@ -2,26 +2,21 @@
 
 from random import choice
 
-
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
+    text = open(file_path) 
+    
+    text_final = []
 
-    text = open(file_path, 'w')
-    text.write("/n add something here")
-
-    print(text)
-
-
-
-
-
+    for word in text:  #iterate over words in line of file splited by spaces
+        text_final += word.split() 
     text.close()
 
-    return 'Contents of your file as one long string'
+    return text_final
 
 
 def make_chains(text_string):
@@ -51,28 +46,93 @@ def make_chains(text_string):
 
     chains = {}
 
-    # your code goes here
+    for i in range(len(text_string)-2): #Stop at the 41 index (i ending at 40 and i+1 ending at 41)
+        key = (text_string[i],text_string[i+1])
+        value = text_string[i+2]
+
+        if key not in chains: #Make key tupled name into dictionary chains
+            chains[key] = []
+            chains[key].append(value)
+        else:
+            chains[key].append(value)
 
     return chains
 
 
+#def make_text(chains):
+#    """Return text from chains."""
+
+    #pull first key
+    # key_list = list(chains.keys())
+
+    # first_key = list(chains.keys())[0]
+
+    # word = str(list(chains.keys())[0][1]), str(choice(chains[first_key])
+    
+    #pass
+
+
+    # first_key = key_list[0] #(would, you)
+    # second_word = key_list[0][1] #'you'
+    # new_first_value = choice(chains[first_key]
+    # next_key = (str(second_word),str(new_first_value))
+
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
+    key = choice(list(chains.keys())) #pull a random key 
+    words = [key[0], key[1]]
+    word = choice(chains[key])
+    #(would,you) >could
+                #>
+    # Keep looping until we reach a value of None
+    # (which would mean it was the end of our original text)
+    # Note that for long texts (like a full book), this might mean
+    # it would run for a very long time.
+
+    while word is not None:
+        key = (key[1], word)
+        words.append(word)
+        word = choice(chains[key])
+
+    return ' '.join(words)
+
+
+
+    # #get a random key from chains 
+    # ran_key = choice(list(chains.keys()))   #yay
+
+    # #get the second word in the key pulled
+    # s_word = ran_key[1]
+
+    # #get the random value in the called key from dictionary
+    # ran_value = choice(chains[ran_key])
+
+
+    # #make a new key
+    # new_key = (s_word,ran_value)
+
+    # #pull a random value from the generated new key
+    # random_value = choice(chains[new_key])
+
+    # # random_robot_words = []
+    # keys > random value > 
+
+
+    # words = []
 
     # your code goes here
 
-    return ' '.join(words)
+    #return ' '.join(words)
 
 
 input_path = 'green-eggs.txt'
 
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+# input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_chains(input_path)
 
 # Produce random text
 random_text = make_text(chains)
